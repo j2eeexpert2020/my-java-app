@@ -1,0 +1,47 @@
+version: 2.1
+
+jobs:
+  test-java:
+    docker:
+      - image: cimg/openjdk:17.0  # Use Java 17
+    steps:
+      - checkout  # Pull latest code
+
+      # Calculate cache key for dependencies
+      - run:
+          name: Calculate cache key
+          command: find . -name 'pom.xml' | xargs cat > /tmp/CIRCLECI_CACHE_KEY
+
+      # Restore dependencies from cache if available
+      - restore_cache:
+          key: cache-{{ checksum "/tmp/CIRCLECI_CACHE_KEY" }}
+
+      # Run Maven tests and generate coverage reports
+      - run:
+          name: Run Tests with JaCoCo Coverage
+          command: mvn test jacoco:report
+
+      # Store test results (JUnit XML reports)
+      - store_test_results:
+          path: target/surefire-reports
+
+      # Store artifacts (JaCoCo coverage reports for download)
+      - store_artifacts:
+          path: target/site/jacoco
+
+      # Save dependencies cache for faster builds
+      - save_cache:
+          key: cache-{{ checksum "/tmp/CIRCLECI_CACHE_KEY" }}
+          paths:
+            - ~/.m2/repository
+
+workflows:
+  build-and-test:
+    jobs:
+      - test-java:
+          filters:
+            branches:
+              only:
+                - dev
+                - main
+                - master  # Allow builds on both `main` and `master`

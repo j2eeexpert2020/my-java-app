@@ -47,4 +47,10 @@ public class AppTest {
         // Assert
         assertEquals(expected, result, "Adding zero should return the other number");
     }
+
+    // Adding a failing test case
+    @Test
+    public void testFailure() {
+        assertTrue("This test will fail.", false);  // This will fail intentionally
+    }
 }

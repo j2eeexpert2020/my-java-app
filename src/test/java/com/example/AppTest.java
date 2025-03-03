@@ -1,6 +1,7 @@
 package com.example;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
@@ -47,4 +48,12 @@ public class AppTest {
         // Assert
         assertEquals(expected, result, "Adding zero should return the other number");
     }
+
+    // Adding a failing test case
+    /**
+    @Test
+    public void testFailure() {
+        assertTrue(false);  // This will fail intentionally
+    }
+    **/
 }

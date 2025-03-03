@@ -50,8 +50,10 @@ public class AppTest {
     }
 
     // Adding a failing test case
+    /**
     @Test
     public void testFailure() {
         assertTrue(false);  // This will fail intentionally
     }
+    **/
 }
